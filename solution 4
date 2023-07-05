@@ -1,0 +1,88 @@
+-- mysql workbench--
+-- create database-- 
+create database quiz;
+use quiz;
+
+-- create table--
+create table questions(
+id int(10)auto_increment,
+ primary key (id),
+ question varchar(200),
+ option1 varchar(200),
+ option2 varchar(200),
+ option3 varchar(200),
+ option4 varchar(200),
+ answer int(200)
+ );
+ 
+ 
+ -- insert into the questions values--
+ insert into questions (question,option1,option2,option3,option4,answer)values
+ ("Natya - Shastra' the main source of India's classical dances was written by","Nara Muni","Bharat Muni","Abhinav Gupt","Tandu Muni",2),
+ ("'Dandia' is a popular dance of","Punjab","Gujarat","Tamil Nadu","Maharashtra",2),
+ ("Which county did Ravi Shastri play for","Glamorgan","Leicestershire","Gloucestershire","Lancashire",1),
+ ("Where is the Railway Staff College located","Pune","Allahabad","Vadodara","Delhi",3),
+ ("Wadia Institute of Himalayan Geology is located at","delhi","shimla","Dehradun","kulu",3);
+ 
+ -- show table--
+ select * from questions;
+
+-- python connectivity--
+import mysql.connector
+#establish Mysql connector
+connection=mysql.connector.connect(
+    host = "localhost",
+    user = "root",
+    password = "ROOT",
+    database = "quiz"
+)
+# create a cursor object to interact with the database
+cursor = connection.cursor()
+#function to retrive and display quiz qustion
+def display_questions():
+    # Fetch questions from the database
+    query = "SELECT * FROM questions"
+    cursor.execute(query)
+    questions = cursor.fetchall()
+    # Display questions and options
+    for question in questions:
+        print("Question:", question[1])
+        print("Options:")
+        print("1. ", question[2])
+        print("2. ", question[3])
+        print("3. ", question[4])
+        print("4. ", question[5])
+        print()
+# Function to take user's answers and calculate the score
+def take_quiz():
+    score = 0
+    # Retrieve questions from the database
+    query = "SELECT * FROM questions"
+    cursor.execute(query)
+    questions = cursor.fetchall()
+    # Display questions and options
+    for question in questions:
+        print("Question:", question[1])
+        print("Options:")
+        print("1. ", question[2])
+        print("2. ", question[3])
+        print("3. ", question[4])
+        print("4. ", question[5])
+        print("Enter your answer (1-4):")
+        user_answer = int(input())
+        # Check if the answer is correct
+        if user_answer == question[6]:
+            score += 1
+    
+    return score
+
+#Main program
+print("WELCOME CANDIDATE")
+print("HERE THE COMPETATION")
+print()
+
+#display the qustions
+display_questions()
+
+#display the final score
+print("Quiz complete your score is:",take_quiz())
